@@ -15,8 +15,8 @@ sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
 sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 echo "[✓] Đã chỉnh sửa file cấu hình SSH."
 
-# Khởi động lại dịch vụ SSH
-systemctl restart sshd
+# Khởi động lại dịch vụ SSH đúng tên cho Ubuntu
+systemctl restart ssh
 echo "[✓] Đã khởi động lại dịch vụ SSH."
 
 # Hoàn tất
