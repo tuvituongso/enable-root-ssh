@@ -17,4 +17,4 @@ grep -q "^PasswordAuthentication" /etc/ssh/sshd_config || echo "PasswordAuthenti
 # Restart SSH
 sudo systemctl restart ssh
 
-echo "✅ Đã cấu hình xong. Bây giờ bạn có thể SSH bằng root@IP và password: Ngoclinh1@@"
+echo "✅ Đã cấu hình xong. Bây giờ bạn có thể SSH bằng root@IP và password: 123456@@"
