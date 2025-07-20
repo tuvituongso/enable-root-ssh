@@ -1,23 +1,20 @@
 #!/bin/bash
 
-# Đảm bảo chạy với quyền sudo
-if [ "$(id -u)" != "0" ]; then
-   echo "Vui lòng chạy script với quyền root hoặc sudo." 
-   exit 1
-fi
+# Đặt password cho user root
+echo "root:123456@@" | sudo chpasswd
 
-# Đặt mật khẩu cho root
-echo "root:123456@@" | chpasswd
-echo "[✓] Đã đặt mật khẩu cho root."
+# Sao lưu file cấu hình SSH
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 
-# Kích hoạt đăng nhập SSH cho root
-sed -i 's/^#\?PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
-sed -i 's/^#\?PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-echo "[✓] Đã chỉnh sửa file cấu hình SSH."
+# Sửa cấu hình SSH để cho phép root login và password auth
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
-# Khởi động lại dịch vụ SSH đúng tên cho Ubuntu
-systemctl restart ssh
-echo "[✓] Đã khởi động lại dịch vụ SSH."
+# Kiểm tra nếu các dòng không tồn tại thì thêm vào cuối
+grep -q "^PermitRootLogin" /etc/ssh/sshd_config || echo "PermitRootLogin yes" | sudo tee -a /etc/ssh/sshd_config
+grep -q "^PasswordAuthentication" /etc/ssh/sshd_config || echo "PasswordAuthentication yes" | sudo tee -a /etc/ssh/sshd_config
 
-# Hoàn tất
-echo "✅ Cấu hình thành công! Bây giờ bạn có thể SSH bằng root và mật khẩu."
+# Restart SSH
+sudo systemctl restart ssh
+
+echo "✅ Đã cấu hình xong. Bây giờ bạn có thể SSH bằng root@IP và password: Ngoclinh1@@"
